@@ -153,7 +153,7 @@ footer img{width:56px;height:56px;border-radius:50%;margin-bottom:6px}
 <script>
 /* ===== CONFIG ===== */
 const CONFIG={
-  API:"https://script.google.com/macros/s/AKfycbyk-bBygPX1aAswdVXNifPjMpxKIrYxBbrZSKKc8gFx46XhHoeVdhz3TzF9_OGR07zq/exec",
+  API:"https://script.google.com/macros/s/AKfycbyzqTNB_lM73fswDSkW4mjiFrNT_hV8zHxFisGb1x3mdb8dpzkUWwQYLpkMMtpngRwO/exec",
   COUNTRY_CODE:"213", SAVE_ORDER_TO_SHEET:true, OPEN_WHATSAPP:true, DEFAULT_LANG:"ar"
 };
 const WILAYAS=["Adrar","Chlef","Laghouat","Oum El Bouaghi","Batna","Béjaïa","Biskra","Béchar","Blida","Bouira","Tamanrasset","Tébessa","Tlemcen","Tiaret","Tizi Ouzou","Alger","Djelfa","Jijel","Sétif","Saïda","Skikda","Sidi Bel Abbès","Annaba","Guelma","Constantine","Médéa","Mostaganem","M'Sila","Mascara","Ouargla","Oran","El Bayadh","Illizi","Bordj Bou Arréridj","Boumerdès","El Tarf","Tindouf","Tissemsilt","El Oued","Khenchela","Souk Ahras","Tipaza","Mila","Aïn Defla","Naâma","Aïn Témouchent","Ghardaïa","Relizane","Timimoun","Bordj Badji Mokhtar","Ouled Djellal","Béni Abbès","In Salah","In Guezzam","Touggourt","Djanet","El M'Ghair","El Meniaa"];
@@ -180,17 +180,19 @@ let P=[],L={},cart=store("si_cart")||[],cur=null,sel={};
 async function init(){
   $("#state").hidden=false;$("#state").innerHTML=`<div class="spin"></div><p>${t("loading")}</p>`;
   try{
-    const r=await fetch(CONFIG.API);if(!r.ok)throw 0;
-    const d=await r.json(),vars=d.variantes||[];
+    const r=await fetch(CONFIG.API);if(!r.ok)throw new Error("HTTP "+r.status);
+    const txt=await r.text();let d;try{d=JSON.parse(txt)}catch{throw new Error("The script did not return JSON (is the deployment public: Anyone?)")}
+    const vars=d.variantes||[];
     P=(d.categories||[]).map(c=>({id:String(c.Category),name:c.Name,price:Number(c.Price)||0,img:c.ImageURL,
       v:vars.filter(v=>String(v.Category)===String(c.Category)).map(v=>{const dk=Object.keys(v).find(k=>k.toLowerCase().startsWith("dispo"));
         return{col:String(v.Colour).trim(),img:v.ImageURL,sizes:String(v.Sizes).split(/[\s,;\/]+/).filter(Boolean).sort((a,b)=>a-b),ok:String(v[dk]).trim().toLowerCase()==="oui"}})}));
     L=d.links||{};
     cart=cart.filter(i=>P.find(p=>p.id===i.pid&&p.v[i.vi]));
+    if(!P.length){$("#state").innerHTML=`<p>${t("none")}</p>`;return}
     $("#state").hidden=true;buildTools();show();
   }catch(e){
     console.error(e);
-    $("#state").innerHTML=`<p>${t("err")}</p><br><button class="pill" id="retry">${t("retry")}</button>`;
+    $("#state").innerHTML=`<p>${t("err")}</p><p class="mute" dir="ltr" style="margin:8px 0 14px;font-size:.8rem">${esc(e.message||e)}</p><button class="pill" id="retry">${t("retry")}</button>`;
     $("#retry").onclick=init;
   }
 }
@@ -319,4 +321,3 @@ $("#yr").textContent=new Date().getFullYear();show();init();
 </script>
 </body>
 </html>
-
