@@ -2,9 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Boutique SI</title>
-<link rel="icon" href="logo.png">
+<link rel="icon" id="ico" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -100,24 +100,56 @@ html{scroll-behavior:smooth;scroll-padding-top:96px}
 .fab{position:fixed;bottom:20px;inset-inline-start:20px;z-index:30;background:#25a05a;color:#fff;border-radius:999px;padding:11px 20px;font-weight:800;text-decoration:none;box-shadow:0 8px 22px rgba(0,0,0,.2)}
 footer{border-top:1px solid var(--line);background:var(--bar);text-align:center;padding:28px 20px;color:var(--mute);font-size:.9rem}
 footer img{width:56px;height:56px;border-radius:50%;margin-bottom:6px}
+body{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+svg{flex:none}em{display:inline-flex;font-style:normal}
+.btn,.pill,.chips span,.contact a,.fab{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.brand span{white-space:nowrap}.hl{width:84px;height:84px;border-radius:50%;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.fh{font-weight:800;margin:6px 0 10px;display:flex;align-items:center;gap:8px}
+.fld{display:grid;gap:6px}.fl{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:.86rem;font-weight:600}
+form .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fe{color:var(--no);font-size:.82rem}[aria-invalid=true]{border-color:var(--no)!important}
+form .btn[type=submit]{position:sticky;bottom:10px;min-height:52px;box-shadow:0 8px 24px rgba(201,80,42,.35)}
+.done{display:grid;gap:12px;justify-items:center;text-align:center;padding:24px 0}
+.done .btn{display:inline-flex;margin-top:4px;width:100%}
+.ok-ic{width:64px;height:64px;border-radius:50%;background:#e6f6ee;color:var(--ok);display:grid;place-items:center}
+.ref{background:var(--bar);border-radius:999px;padding:4px 16px}
+.sum{width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:grid;gap:8px;text-align:start;font-size:.92rem}
+.sum div{display:flex;justify-content:space-between;gap:10px}.sum .st{font-weight:800;border-top:1px dashed var(--line);padding-top:8px}
+@media(max-width:600px){
+ main{padding:14px 12px 90px}.bar>div{padding:8px 12px}
+ .brand{letter-spacing:.06em;font-size:.95rem;gap:8px}.brand img{width:40px;height:40px}
+ .pill{padding:8px 13px;min-height:40px}
+ .hero{padding:28px 14px;border-radius:22px}.hl{width:68px;height:68px}
+ h2{font-size:1.4rem;margin-top:32px}
+ .grid{grid-template-columns:repeat(2,1fr);gap:12px}#vgrid{grid-template-columns:1fr}
+ .frame{padding:8px}.tag{top:14px;inset-inline-end:14px}
+ .info{padding:12px}.info h3{font-size:1rem}.price{padding:4px 12px;font-size:.9rem}.meta{flex-wrap:wrap}
+ .sz{min-width:46px;min-height:42px}.btn{min-height:48px}
+ .tools>input{flex:1 1 100%}.tools select{flex:1 1 45%}.tools .chk{flex:1 1 100%;min-height:44px}
+ .drawer{width:100%;padding:16px}
+ .fab span{display:none}.fab{width:54px;height:54px;padding:0;bottom:16px;inset-inline-start:14px}
+ .contact a{min-height:44px}
+}
+@media(max-width:480px){form .two{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <header class="bar"><div>
-  <button class="brand" id="home"><img src="logo.png" alt="SI Boutique"><span><b>SI</b> BOUTIQUE</span></button>
+  <button class="brand" id="home"><img class="lg" alt="SI Boutique" width="52" height="52"><span><b>SI</b> BOUTIQUE</span></button>
   <div class="acts">
-    <button class="pill" id="cart-btn"><span data-t="cart"></span><i id="cnt">0</i></button>
-    <button class="pill" id="lang"></button>
+    <button class="pill" id="cart-btn"><em data-ic="cart"></em><span data-t="cart"></span><i id="cnt">0</i></button>
+    <button class="pill" id="lang"><em data-ic="globe"></em><span id="lang-t"></span></button>
   </div>
 </div></header>
 
 <main>
   <section class="hero">
+    <img class="lg hl" alt="" width="84" height="84">
     <h1>Boutique <span>SI</span></h1>
     <p class="slogan" data-t="slogan"></p>
     <p class="sub" data-t="sub"></p>
-    <div class="chips"><span data-t="c1"></span><span data-t="c2"></span><span data-t="c3"></span></div>
+    <div class="chips"><span><em data-ic="truck"></em><span data-t="c1"></span></span><span><em data-ic="shield"></em><span data-t="c2"></span></span><span><em data-ic="swap"></em><span data-t="c3"></span></span></div>
     <a class="btn cta" href="#models" data-t="cta"></a>
   </section>
 
@@ -142,11 +174,11 @@ footer img{width:56px;height:56px;border-radius:50%;margin-bottom:6px}
     <h2 data-t="more"></h2><div class="grid" id="more-grid"></div>
   </section>
 
-  <section class="contact"><p class="mute" data-t="contact"></p><div class="chips" id="socials"></div></section>
+  <section class="contact"><h2 data-t="contact"></h2><p class="mute" data-t="contactSub"></p><div class="chips" id="socials"></div></section>
 </main>
 
-<footer><img src="logo.png" alt="SI Boutique"><p>© <span id="yr"></span> Boutique SI</p></footer>
-<a class="fab" id="fab" hidden target="_blank" rel="noopener">WhatsApp</a>
+<footer><img class="lg" alt="SI Boutique" width="56" height="56"><p data-t="foot" style="font-weight:600;color:var(--o1)"></p><p>© <span id="yr"></span> Boutique SI</p></footer>
+<a class="fab" id="fab" hidden target="_blank" rel="noopener" aria-label="WhatsApp"></a>
 <div class="shade" id="shade" hidden></div>
 <aside class="drawer" id="drawer" hidden aria-label="Panier"><div id="dbody"></div></aside>
 
@@ -158,8 +190,8 @@ const CONFIG={
 };
 const WILAYAS=["Adrar","Chlef","Laghouat","Oum El Bouaghi","Batna","Béjaïa","Biskra","Béchar","Blida","Bouira","Tamanrasset","Tébessa","Tlemcen","Tiaret","Tizi Ouzou","Alger","Djelfa","Jijel","Sétif","Saïda","Skikda","Sidi Bel Abbès","Annaba","Guelma","Constantine","Médéa","Mostaganem","M'Sila","Mascara","Ouargla","Oran","El Bayadh","Illizi","Bordj Bou Arréridj","Boumerdès","El Tarf","Tindouf","Tissemsilt","El Oued","Khenchela","Souk Ahras","Tipaza","Mila","Aïn Defla","Naâma","Aïn Témouchent","Ghardaïa","Relizane","Timimoun","Bordj Badji Mokhtar","Ouled Djellal","Béni Abbès","In Salah","In Guezzam","Touggourt","Djanet","El M'Ghair","El Meniaa"];
 const TXT={
-fr:{cur:"DA",lang:"العربية",cart:"Panier",slogan:"Chaque pas mérite du style.",sub:"Des baskets choisies avec soin. Choisissez le modèle, la couleur, la pointure — livré jusqu'à votre porte.",c1:"Livraison rapide",c2:"Qualité garantie",c3:"Échange à la réception",ours:"Nos modèles",oursSub:"Choisissez un modèle pour voir les couleurs et pointures disponibles.",colors:n=>n+(n>1?" couleurs":" couleur"),back:"Retour",pickSub:"Choisissez une couleur et une pointure.",ok:"Disponible",no:"Indisponible",sizes:"Pointures disponibles",add:"Ajouter au panier",pick:"Choisissez une pointure",size:"Pointure",remove:"Retirer",empty:"Votre panier est vide.",total:n=>`Total (${n} paire${n>1?"s":""})`,name:"Nom et prénom",phone:"Numéro de téléphone",wilaya:"Choisir la wilaya",addr:"Adresse complète",note:"Remarque (facultatif)",confirm:"Confirmer la commande",sending:"Envoi…",thanks:"Merci !",thanksSub:"Votre commande est enregistrée. Nous vous appellerons pour la confirmer.",wa:"Confirmer sur WhatsApp",close:"Fermer",contact:"Contactez-nous",loading:"Chargement des produits…",err:"Impossible de charger les produits pour le moment. Vérifiez votre connexion.",retry:"Réessayer",none:"Aucun produit pour le moment.",wMsg:"Bonjour, je souhaite commander :",cta:"Découvrir nos modèles",search:"Rechercher un modèle",allCol:"Toutes les couleurs",sort:"Trier par prix",asc:"Prix croissant",desc:"Prix décroissant",onlyOk:"Disponibles",how:"Comment commander",s1:"Choisissez",s1d:"Le modèle, la couleur et la pointure.",s2:"Remplissez",s2d:"Vos coordonnées et votre adresse.",s3:"Recevez",s3d:"Nous vous appelons pour confirmer la livraison.",more:"Autres modèles",low:n=>`Plus que ${n} pointure${n>1?"s":""}`},
-ar:{cur:"دج",lang:"Français",cart:"السلة",slogan:"كل خطوة تستحق أناقة.",sub:"أحذية رياضية مختارة بعناية. اختر الموديل، ثم اللون، ثم المقاس — يصلك حتى باب المنزل.",c1:"توصيل سريع",c2:"جودة مضمونة",c3:"إمكانية التبديل عند الاستلام",ours:"موديلاتنا",oursSub:"اختر موديلاً لمشاهدة الألوان والمقاسات المتوفرة.",colors:n=>n+" ألوان",back:"رجوع",pickSub:"اختر لوناً ثم مقاساً.",ok:"متوفر",no:"غير متوفر",sizes:"المقاسات المتوفرة",add:"أضف إلى السلة",pick:"اختر مقاساً",size:"مقاس",remove:"إزالة",empty:"سلتك فارغة.",total:n=>`المجموع (${n} زوج)`,name:"الاسم الكامل",phone:"رقم الهاتف",wilaya:"اختر الولاية",addr:"العنوان بالتفصيل",note:"ملاحظة (اختياري)",confirm:"تأكيد الطلب",sending:"جارٍ الإرسال…",thanks:"شكراً لك!",thanksSub:"تم تسجيل طلبك. سنتصل بك لتأكيده.",wa:"تأكيد عبر واتساب",close:"إغلاق",contact:"تواصل معنا",loading:"جارٍ تحميل المنتجات…",err:"تعذّر تحميل المنتجات حالياً. تحقق من اتصالك بالإنترنت.",retry:"إعادة المحاولة",none:"لا توجد منتجات حالياً.",wMsg:"مرحباً، أريد طلب:",cta:"اكتشف موديلاتنا",search:"ابحث عن موديل",allCol:"كل الألوان",sort:"ترتيب حسب السعر",asc:"السعر: الأقل أولاً",desc:"السعر: الأعلى أولاً",onlyOk:"المتوفر فقط",how:"كيف تطلب؟",s1:"اختر",s1d:"الموديل واللون والمقاس.",s2:"املأ",s2d:"بياناتك وعنوانك.",s3:"استلم",s3d:"نتصل بك لتأكيد التوصيل.",more:"موديلات أخرى",low:n=>n===1?"بقي مقاس واحد فقط":n===2?"بقي مقاسان فقط":`بقي ${n} مقاسات فقط`}};
+fr:{cur:"DA",lang:"العربية",cart:"Panier",slogan:"Chaque pas mérite du style.",sub:"Des baskets choisies avec soin. Choisissez le modèle, la couleur, la pointure — livré jusqu'à votre porte.",c1:"Livraison rapide",c2:"Qualité garantie",c3:"Échange à la réception",ours:"Nos modèles",oursSub:"Choisissez un modèle pour voir les couleurs et pointures disponibles.",colors:n=>n+(n>1?" couleurs":" couleur"),back:"Retour",pickSub:"Choisissez une couleur et une pointure.",ok:"Disponible",no:"Indisponible",sizes:"Pointures disponibles",add:"Ajouter au panier",pick:"Choisissez une pointure",size:"Pointure",remove:"Retirer",empty:"Votre panier est vide.",total:n=>`Total (${n} paire${n>1?"s":""})`,name:"Nom et prénom",phone:"Numéro de téléphone",wilaya:"Choisir la wilaya",addr:"Adresse complète",note:"Remarque (facultatif)",confirm:"Confirmer la commande",sending:"Envoi…",thanks:"Merci !",thanksSub:"Votre commande est enregistrée. Nous vous appellerons pour la confirmer.",wa:"Confirmer sur WhatsApp",close:"Fermer",contact:"Contactez-nous",loading:"Chargement des produits…",err:"Impossible de charger les produits pour le moment. Vérifiez votre connexion.",retry:"Réessayer",none:"Aucun produit pour le moment.",wMsg:"Bonjour, je souhaite commander :",cta:"Découvrir nos modèles",search:"Rechercher un modèle",allCol:"Toutes les couleurs",sort:"Trier par prix",asc:"Prix croissant",desc:"Prix décroissant",onlyOk:"Disponibles",how:"Comment commander",s1:"Choisissez",s1d:"Le modèle, la couleur et la pointure.",s2:"Remplissez",s2d:"Vos coordonnées et votre adresse.",s3:"Recevez",s3d:"Nous vous appelons pour confirmer la livraison.",more:"Autres modèles",low:n=>`Plus que ${n} pointure${n>1?"s":""}`,details:"Vos informations",phone2:"Deuxième numéro (facultatif)",eName:"Entrez votre nom complet.",ePhone:"Numéro invalide (ex. 05 50 00 00 00).",eWil:"Choisissez votre wilaya.",eAddr:"Entrez votre adresse complète.",cartSlogan:"Plus qu'une étape pour recevoir vos baskets.",ref:"N° de commande",totalL:"Total",next:x=>`Nous vous appelons au ${x} pour confirmer la livraison.`,shop:"Continuer mes achats",foot:"Le confort commence ici.",contactSub:"Une question ? Écrivez-nous."},
+ar:{cur:"دج",lang:"Français",cart:"السلة",slogan:"كل خطوة تستحق أناقة.",sub:"أحذية رياضية مختارة بعناية. اختر الموديل، ثم اللون، ثم المقاس — يصلك حتى باب المنزل.",c1:"توصيل سريع",c2:"جودة مضمونة",c3:"إمكانية التبديل عند الاستلام",ours:"موديلاتنا",oursSub:"اختر موديلاً لمشاهدة الألوان والمقاسات المتوفرة.",colors:n=>n+" ألوان",back:"رجوع",pickSub:"اختر لوناً ثم مقاساً.",ok:"متوفر",no:"غير متوفر",sizes:"المقاسات المتوفرة",add:"أضف إلى السلة",pick:"اختر مقاساً",size:"مقاس",remove:"إزالة",empty:"سلتك فارغة.",total:n=>`المجموع (${n} زوج)`,name:"الاسم الكامل",phone:"رقم الهاتف",wilaya:"اختر الولاية",addr:"العنوان بالتفصيل",note:"ملاحظة (اختياري)",confirm:"تأكيد الطلب",sending:"جارٍ الإرسال…",thanks:"شكراً لك!",thanksSub:"تم تسجيل طلبك. سنتصل بك لتأكيده.",wa:"تأكيد عبر واتساب",close:"إغلاق",contact:"تواصل معنا",loading:"جارٍ تحميل المنتجات…",err:"تعذّر تحميل المنتجات حالياً. تحقق من اتصالك بالإنترنت.",retry:"إعادة المحاولة",none:"لا توجد منتجات حالياً.",wMsg:"مرحباً، أريد طلب:",cta:"اكتشف موديلاتنا",search:"ابحث عن موديل",allCol:"كل الألوان",sort:"ترتيب حسب السعر",asc:"السعر: الأقل أولاً",desc:"السعر: الأعلى أولاً",onlyOk:"المتوفر فقط",how:"كيف تطلب؟",s1:"اختر",s1d:"الموديل واللون والمقاس.",s2:"املأ",s2d:"بياناتك وعنوانك.",s3:"استلم",s3d:"نتصل بك لتأكيد التوصيل.",more:"موديلات أخرى",low:n=>n===1?"بقي مقاس واحد فقط":n===2?"بقي مقاسان فقط":`بقي ${n} مقاسات فقط`,details:"معلوماتك",phone2:"رقم هاتف ثانٍ (اختياري)",eName:"أدخل اسمك الكامل.",ePhone:"رقم غير صحيح (مثال: 0550000000).",eWil:"اختر ولايتك.",eAddr:"أدخل عنوانك بالتفصيل.",cartSlogan:"خطوة واحدة فقط لتصلك أحذيتك.",ref:"رقم الطلب",totalL:"المجموع",next:x=>`سنتصل بك على ${x} لتأكيد التوصيل.`,shop:"متابعة التسوق",foot:"الراحة تبدأ من هنا.",contactSub:"عندك سؤال؟ راسلنا."}};
 
 /* ===== TOOLS ===== */
 const $=s=>document.querySelector(s);
@@ -197,6 +229,26 @@ async function init(){
   }
 }
 
+const LOGO="data:image/jpeg;base64,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";
+document.querySelectorAll("img.lg").forEach(i=>i.src=LOGO);document.getElementById("ico").href=LOGO;
+const IC={
+cart:'<path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>',
+truck:'<path d="M2 6h11v10H2z"/><path d="M13 9h5l3 3v4h-8"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>',
+shield:'<path d="M12 3 4 6v6c0 5 3.500 8 8 9 4.500-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+swap:'<path d="M4 8h14l-3-3M20 16H6l3 3"/>',
+globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+phone:'<path d="M5 3h4l2 5-2.500 1.500a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+pin:'<path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/>',
+home:'<path d="M3 11 12 3l9 8M5 10v10h14V10"/>',
+note:'<path d="M4 4h16v12H8l-4 4z"/>',
+check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+fb:'<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/>',
+ig:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.500" cy="6.500" r=".8"/>',
+wa:'<path d="M4 20l1.300-4A8 8 0 1 1 8 18.700z"/><path d="M9 9c0 3 3 6 6 6l1-2-2-1-1 1c-1-.5-2-1.500-2.500-2.500l1-1-1-2z"/>',
+tt:'<path d="M14 3v11a4 4 0 1 1-4-4"/><path d="M14 3c0 3 2 5 5 5"/>'};
+const ic=(n,z=18)=>`<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||""}</svg>`;
+const fld=(i,l,inner)=>`<label class="fld"><span class="fl">${ic(i,16)}${l}</span>${inner}</label>`;
 const norm=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const COLORS={noir:"#1b1b1d",blanc:"#f5f5f2",gris:"#8b9098",beige:"#d8c3a5",bleu:"#3b6ea8",rouge:"#c0392b",vert:"#4f7a5a",marron:"#7a5638"};
 const F={q:"",col:"",sort:"",ok:false};
@@ -220,12 +272,12 @@ function buildTools(){
   $("#fs").onchange=e=>{F.sort=e.target.value;home()};$("#fo").onchange=e=>{F.ok=e.target.checked;home()};
 }
 const lightbox=u=>{const d=document.createElement("div");d.className="lb";d.innerHTML=`<img src="${esc(u.replace("sz=w900","sz=w1600"))}" alt="">`;d.onclick=()=>d.remove();document.body.append(d)};
-const fab=()=>{const a=$("#fab"),w=L["whatsApp link"];a.hidden=!w;if(w)a.href=wa(w)};
+const fab=()=>{const a=$("#fab"),w=L["whatsApp link"];a.hidden=!w;if(w){a.href=wa(w);a.innerHTML=ic("wa",24)+"<span>WhatsApp</span>"}};
 
 /* ===== VIEWS ===== */
 function show(){
   document.querySelectorAll("[data-t]").forEach(e=>{const v=t(e.dataset.t);if(typeof v==="string")e.textContent=v});
-  $("#lang").textContent=t("lang");$("#cnt").textContent=cart.reduce((a,i)=>a+i.qty,0);
+  $("#lang-t").textContent=t("lang");document.querySelectorAll("[data-ic]").forEach(e=>e.innerHTML=ic(e.dataset.ic));$("#cnt").textContent=cart.reduce((a,i)=>a+i.qty,0);
   document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
   if(!P.length)return;
   $("#home-view").hidden=cur!==null;$("#prod-view").hidden=cur===null;
@@ -236,7 +288,7 @@ function show(){
     $("#vgrid").innerHTML=p.v.map((v,j)=>`<article class="card" data-j="${j}"><div class="frame">${img(v.img||p.img,p.name+" "+v.col,v.ok?"":"off")}<span class="tag ${v.ok?"ok":"no"}">${v.ok?t("ok"):t("no")}</span></div>
       <div class="info"><h3>${esc(cap(v.col))}</h3><span class="mute">${t("sizes")}</span>${v.ok&&v.sizes.length<=2?`<span class="low">${t("low")(v.sizes.length)}</span>`:""}
       <div class="sizes">${v.sizes.map(z=>`<button class="sz ${sel[j]===z?"on":""}" data-z="${esc(z)}" ${v.ok?"":"disabled"}>${esc(z)}</button>`).join("")}</div>
-      <button class="btn" data-add ${v.ok&&sel[j]?"":"disabled"} style="margin-top:auto">${v.ok?(sel[j]?t("add"):t("pick")):t("no")}</button></div></article>`).join("");
+      <button class="btn" data-add ${v.ok&&sel[j]?"":"disabled"} style="margin-top:auto">${v.ok&&sel[j]?ic("cart",18):""}${v.ok?(sel[j]?t("add"):t("pick")):t("no")}</button></div></article>`).join("");
     $("#more-grid").innerHTML=P.map((_,i)=>i).filter(i=>i!==cur).slice(0,3).map(cardHome).join("");
   }
   socials();fab();
@@ -261,7 +313,7 @@ function socials(){
   if(ph){const d=digits(ph).replace(/^213/,"0");n.push([d.replace(/(\d{2})(?=\d)/g,"$1 "),"tel:"+d])}
   [["Facebook","facebook link"],["Instagram","instagram link"],["TikTok","tiktok link"]].forEach(([a,k])=>L[k]&&n.push([a,L[k]]));
   if(L["whatsApp link"])n.push(["WhatsApp",wa(L["whatsApp link"])]);
-  $("#socials").innerHTML=n.map(([a,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(a)}</a>`).join("");
+  $("#socials").innerHTML=n.map(([a,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${ic(({Facebook:"fb",Instagram:"ig",TikTok:"tt",WhatsApp:"wa"})[a]||"phone",16)}${esc(a)}</a>`).join("");
 }
 
 /* ===== CART ===== */
@@ -272,21 +324,25 @@ $("#cart-btn").onclick=openCart;$("#shade").onclick=closeCart;
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeCart();document.querySelector(".lb")?.remove()}});
 function renderCart(){
   const n=cart.reduce((a,i)=>a+i.qty,0),sum=cart.reduce((a,i)=>a+line(i).p.price*i.qty,0);
+  const sv={nom:"",tel:"",tel2:"",wilaya:"",adresse:"",...(store("si_cust")||{})};
   $("#cnt").textContent=n;
-  const head=`<div class="dh"><h3>${t("cart")}</h3><button class="x" id="cx" aria-label="${t("close")}">&times;</button></div>`;
+  const head=`<div class="dh"><h3 class="row2">${ic("cart",22)}${t("cart")}</h3><button class="x" id="cx" aria-label="${t("close")}">&times;</button></div>`;
   if(!cart.length){$("#dbody").innerHTML=head+`<p class="state">${t("empty")}</p>`;$("#cx").onclick=closeCart;return}
-  $("#dbody").innerHTML=head+cart.map((i,k)=>{const{p,v}=line(i);return`<div class="item" data-k="${k}">
+  $("#dbody").innerHTML=head+`<p class="mute" style="margin:-6px 0 14px">${t("cartSlogan")}</p>`+cart.map((i,k)=>{const{p,v}=line(i);return`<div class="item" data-k="${k}">
     <div class="top"><span class="row2">${img(v.img||p.img,p.name,"thumb")}<span>${esc(p.name)} — ${esc(cap(v.col))}</span></span><button class="rm" data-rm>${t("remove")}</button></div>
     <div class="bot"><label class="mute">${t("size")} <select data-size>${v.sizes.map(z=>`<option ${z===i.size?"selected":""}>${esc(z)}</option>`).join("")}</select></label>
     <div class="qty"><button data-q="-1">−</button><span>${i.qty}</span><button data-q="1">+</button></div></div>
     <span class="price" style="justify-self:start">${money(p.price*i.qty)}</span></div>`}).join("")+
   `<div class="tot"><span class="mute">${t("total")(n)}</span><span class="price" style="font-size:1.2rem">${money(sum)}</span></div>
-   <form id="f"><input name="nom" placeholder="${t("name")}" required autocomplete="name">
-   <input name="tel" type="tel" placeholder="${t("phone")}" required pattern="(\\+?213\\s?|0)?[567](\\s?\\d){8}" title="05 50 00 00 00" inputmode="tel" autocomplete="tel">
-   <select name="wilaya" required><option value="">${t("wilaya")}</option>${WILAYAS.map((w,k)=>`<option value="${esc(w)}">${String(k+1).padStart(2,"0")} - ${esc(w)}</option>`).join("")}</select>
-   <input name="adresse" placeholder="${t("addr")}" required autocomplete="street-address">
-   <textarea name="note" rows="2" placeholder="${t("note")}"></textarea>
-   <button class="btn" type="submit">${t("confirm")}</button></form>`;
+   <h4 class="fh">${ic("user",18)}${t("details")}</h4>
+   <form id="f" novalidate>
+   ${fld("user",t("name"),`<input name="nom" required autocomplete="name" value="${esc(sv.nom)}">`)}
+   <div class="two">${fld("phone",t("phone"),`<input name="tel" type="tel" required inputmode="tel" autocomplete="tel" placeholder="05 50 00 00 00" value="${esc(sv.tel)}">`)}
+   ${fld("phone",t("phone2"),`<input name="tel2" type="tel" inputmode="tel" placeholder="06 60 00 00 00" value="${esc(sv.tel2)}">`)}</div>
+   ${fld("pin",t("wilaya"),`<select name="wilaya" required><option value="">—</option>${WILAYAS.map((w,k)=>`<option value="${esc(w)}" ${w===sv.wilaya?"selected":""}>${String(k+1).padStart(2,"0")} - ${esc(w)}</option>`).join("")}</select>`)}
+   ${fld("home",t("addr"),`<input name="adresse" required autocomplete="street-address" value="${esc(sv.adresse)}">`)}
+   ${fld("note",t("note"),`<textarea name="note" rows="2"></textarea>`)}
+   <button class="btn" type="submit">${t("confirm")} · ${money(sum)}</button></form>`;
   $("#cx").onclick=closeCart;$("#f").onsubmit=submit;
 }
 $("#dbody").addEventListener("click",e=>{
@@ -302,19 +358,35 @@ $("#dbody").addEventListener("change",e=>{
   store("si_cart",cart);renderCart();
 });
 
+const PH=/^(\+?213\s?|0)?[567](\s?\d){8}$/;
 async function submit(e){
-  e.preventDefault();const d=Object.fromEntries(new FormData(e.target)),b=e.target.querySelector("[type=submit]");
-  b.disabled=true;b.textContent=t("sending");
+  e.preventDefault();const f=e.target,d=Object.fromEntries(new FormData(f));
+  f.querySelectorAll(".fe").forEach(x=>x.remove());f.querySelectorAll("[aria-invalid]").forEach(x=>x.removeAttribute("aria-invalid"));
+  const er={};
+  if(d.nom.trim().length<3)er.nom=t("eName");
+  if(!PH.test(d.tel.trim()))er.tel=t("ePhone");
+  if(d.tel2.trim()&&!PH.test(d.tel2.trim()))er.tel2=t("ePhone");
+  if(!d.wilaya)er.wilaya=t("eWil");
+  if(d.adresse.trim().length<5)er.adresse=t("eAddr");
+  const ks=Object.keys(er);
+  if(ks.length){ks.forEach(k=>{f.elements[k].setAttribute("aria-invalid","true");f.elements[k].closest("label").insertAdjacentHTML("beforeend",`<small class="fe">${er[k]}</small>`)});f.elements[ks[0]].focus();return}
+  const b=f.querySelector("[type=submit]");b.disabled=true;b.textContent=t("sending");
+  store("si_cust",{nom:d.nom,tel:d.tel,tel2:d.tel2,wilaya:d.wilaya,adresse:d.adresse});
+  const ref="SI-"+Date.now().toString(36).toUpperCase().slice(-6);
   const items=cart.map(i=>{const{p,v}=line(i);return{produit:p.name,couleur:v.col,taille:i.size,quantite:i.qty,prix:p.price}});
   const total=items.reduce((a,i)=>a+i.prix*i.quantite,0);
-  if(CONFIG.SAVE_ORDER_TO_SHEET){try{await fetch(CONFIG.API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify({...d,items,total,date:new Date().toISOString()})})}catch(err){console.warn(err)}}
-  const msg=`${t("wMsg")}\n`+items.map(i=>`• ${i.produit} — ${cap(i.couleur)}, ${i.taille} × ${i.quantite}`).join("\n")+`\n\n${money(total)}\n${d.nom}\n${d.tel}\n${d.wilaya}\n${d.adresse}`+(d.note?`\n${d.note}`:"");
+  if(CONFIG.SAVE_ORDER_TO_SHEET){try{await fetch(CONFIG.API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify({...d,ref,items,total,date:new Date().toISOString()})})}catch(err){console.warn(err)}}
+  const lines=items.map(i=>`• ${i.produit} — ${cap(i.couleur)}, ${i.taille} × ${i.quantite}`).join("\n");
+  const msg=`${t("wMsg")} (${ref})\n${lines}\n\n${money(total)}\n${d.nom}\n${d.tel}${d.tel2?" / "+d.tel2:""}\n${d.wilaya}\n${d.adresse}`+(d.note?`\n${d.note}`:"");
   const w=L["whatsApp link"];
   cart=[];store("si_cart",cart);show();
-  $("#dbody").innerHTML=`<div class="done"><h3>${t("thanks")}</h3><p class="mute">${t("thanksSub")}</p>
-    ${CONFIG.OPEN_WHATSAPP&&w?`<a class="btn" href="${esc(wa(w,msg))}" target="_blank" rel="noopener">${t("wa")}</a>`:""}
-    <button class="pill" id="dc" style="margin-top:12px">${t("close")}</button></div>`;
-  $("#dc").onclick=closeCart;
+  $("#dbody").innerHTML=`<div class="done"><div class="ok-ic">${ic("check",34)}</div><h3>${t("thanks")}</h3>
+   <p class="mute">${t("thanksSub")}</p><p class="ref">${t("ref")} <b dir="ltr">${ref}</b></p>
+   <div class="sum">${items.map(i=>`<div><span>${esc(i.produit)} — ${esc(cap(i.couleur))}, ${esc(i.taille)} × ${i.quantite}</span><span>${money(i.prix*i.quantite)}</span></div>`).join("")}<div class="st"><span>${t("totalL")}</span><span>${money(total)}</span></div></div>
+   <p class="mute">${t("next")(esc(d.tel))}</p>
+   ${CONFIG.OPEN_WHATSAPP&&w?`<a class="btn" href="${esc(wa(w,msg))}" target="_blank" rel="noopener">${ic("wa",18)}${t("wa")}</a>`:""}
+   <button class="pill" id="dc">${t("shop")}</button></div>`;
+  $("#dc").onclick=()=>{closeCart();cur=null;show();scrollTo(0,0)};
 }
 
 $("#yr").textContent=new Date().getFullYear();show();init();
