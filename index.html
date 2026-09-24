@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f2ec">
+<meta name="description" content="Boutique SI — baskets choisies avec soin. أحذية رياضية مختارة بعناية.">
 <title>Boutique SI</title>
 <link rel="icon" id="ico" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -139,6 +141,14 @@ form .btn[type=submit]{position:sticky;bottom:10px;min-height:52px;box-shadow:0 
 .opt input:checked+span{border-color:var(--o1);background:#fff6f0;box-shadow:0 0 0 3px rgba(201,80,42,.12)}
 .opt input:focus-visible+span{outline:2px solid var(--o1);outline-offset:2px}
 .opt span{min-width:0}
+.sk .ph{aspect-ratio:1;border-radius:6px;background:linear-gradient(90deg,#e9e3d9,#f4efe7,#e9e3d9);background-size:200% 100%;animation:sh 1.2s infinite}
+.sk i{display:block;height:14px;border-radius:7px;background:#eee7dc;width:70%;margin-bottom:8px}.sk i+i{width:40%}
+@keyframes sh{to{background-position:-200% 0}}
+.cbar{position:fixed;left:50%;transform:translateX(-50%);width:min(520px,calc(100% - 24px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:35;background:var(--ink);color:#fff;border:0;border-radius:16px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+.cbar .price{box-shadow:none}
+body.hascart .fab{bottom:86px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:60;background:#fff;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.18);border-radius:14px;padding:10px 16px;display:flex;gap:8px;align-items:center;font-weight:600;width:max-content;max-width:calc(100% - 24px)}
+.toast svg{color:var(--ok)}
 .tots{display:grid;gap:8px;margin:14px 0}.tots>div{display:flex;justify-content:space-between;align-items:center}
 .tots .disc{color:var(--ok);font-weight:600}.tots .tt{font-weight:800;border-top:1px dashed var(--line);padding-top:10px}.tots .tt .price{font-size:1.2rem}
 .hint{display:flex;gap:8px;align-items:center;background:#fff6f0;border:1px solid #f3d5c4;color:var(--o1);border-radius:12px;padding:8px 12px;font-size:.88rem;font-weight:600}
@@ -168,7 +178,7 @@ form .btn[type=submit]{position:sticky;bottom:10px;min-height:52px;box-shadow:0 
     <a class="btn cta" href="#models" data-t="cta"></a>
   </section>
 
-  <div id="state" class="state"><div class="spin"></div><p data-t="loading"></p></div>
+  <div id="state" class="state"></div>
 
   <section id="home-view" hidden>
     <h2 id="models" data-t="ours"></h2><p class="lead" data-t="oursSub"></p>
@@ -185,7 +195,7 @@ form .btn[type=submit]{position:sticky;bottom:10px;min-height:52px;box-shadow:0 
   <section id="prod-view" hidden>
     <div class="back"><button class="pill" id="back" data-t="back"></button><h2 id="p-name"></h2><span class="price" id="p-price"></span></div>
     <p class="lead" data-t="pickSub"></p>
-    <p class="promo-line"><em data-ic="tag"></em><span data-t="promo"></span></p>
+    <p class="promo-line"><em data-ic="tag"></em><span id="promoTxt"></span></p>
     <div class="grid" id="vgrid"></div>
     <h2 data-t="more"></h2><div class="grid" id="more-grid"></div>
   </section>
@@ -195,6 +205,7 @@ form .btn[type=submit]{position:sticky;bottom:10px;min-height:52px;box-shadow:0 
 
 <footer><img class="lg" alt="SI Boutique" width="56" height="56"><p data-t="foot" style="font-weight:600;color:var(--o1)"></p><p>© <span id="yr"></span> Boutique SI</p></footer>
 <a class="fab" id="fab" hidden target="_blank" rel="noopener" aria-label="WhatsApp"></a>
+<button class="cbar" id="cbar" hidden></button>
 <div class="shade" id="shade" hidden></div>
 <aside class="drawer" id="drawer" hidden aria-label="Panier"><div id="dbody"></div></aside>
 
@@ -209,8 +220,8 @@ const CONFIG={
 };
 const WILAYAS=["Adrar","Chlef","Laghouat","Oum El Bouaghi","Batna","Béjaïa","Biskra","Béchar","Blida","Bouira","Tamanrasset","Tébessa","Tlemcen","Tiaret","Tizi Ouzou","Alger","Djelfa","Jijel","Sétif","Saïda","Skikda","Sidi Bel Abbès","Annaba","Guelma","Constantine","Médéa","Mostaganem","M'Sila","Mascara","Ouargla","Oran","El Bayadh","Illizi","Bordj Bou Arréridj","Boumerdès","El Tarf","Tindouf","Tissemsilt","El Oued","Khenchela","Souk Ahras","Tipaza","Mila","Aïn Defla","Naâma","Aïn Témouchent","Ghardaïa","Relizane","Timimoun","Bordj Badji Mokhtar","Ouled Djellal","Béni Abbès","In Salah","In Guezzam","Touggourt","Djanet","El M'Ghair","El Meniaa"];
 const TXT={
-fr:{cur:"DA",lang:"العربية",cart:"Panier",slogan:"Chaque pas mérite du style.",sub:"Des baskets choisies avec soin. Choisissez le modèle, la couleur, la pointure — livré jusqu'à votre porte.",c1:"Livraison rapide",c2:"Qualité garantie",c3:"Échange à la réception",ours:"Nos modèles",oursSub:"Choisissez un modèle pour voir les couleurs et pointures disponibles.",colors:n=>n+(n>1?" couleurs":" couleur"),back:"Retour",pickSub:"Choisissez une couleur et une pointure.",ok:"Disponible",no:"Indisponible",sizes:"Pointures disponibles",add:"Ajouter au panier",pick:"Choisissez une pointure",size:"Pointure",remove:"Retirer",empty:"Votre panier est vide.",total:n=>`Total (${n} paire${n>1?"s":""})`,name:"Nom et prénom",phone:"Numéro de téléphone",wilaya:"Choisir la wilaya",addr:"Adresse complète",note:"Remarque (facultatif)",confirm:"Confirmer la commande",sending:"Envoi…",thanks:"Merci !",thanksSub:"Votre commande est enregistrée. Nous vous appellerons pour la confirmer.",wa:"Confirmer sur WhatsApp",close:"Fermer",contact:"Contactez-nous",loading:"Chargement des produits…",err:"Impossible de charger les produits pour le moment. Vérifiez votre connexion.",retry:"Réessayer",none:"Aucun produit pour le moment.",wMsg:"Bonjour, je souhaite commander :",cta:"Découvrir nos modèles",search:"Rechercher un modèle",allCol:"Toutes les couleurs",sort:"Trier par prix",asc:"Prix croissant",desc:"Prix décroissant",onlyOk:"Disponibles",how:"Comment commander",s1:"Choisissez",s1d:"Le modèle, la couleur et la pointure.",s2:"Remplissez",s2d:"Vos coordonnées et votre adresse.",s3:"Recevez",s3d:"Nous vous appelons pour confirmer la livraison.",more:"Autres modèles",low:n=>`Plus que ${n} pointure${n>1?"s":""}`,details:"Vos informations",phone2:"Deuxième numéro (facultatif)",eName:"Entrez votre nom complet.",ePhone:"Numéro invalide (ex. 05 50 00 00 00).",eWil:"Choisissez votre wilaya.",eAddr:"Entrez votre adresse complète.",cartSlogan:"Plus qu'une étape pour recevoir vos baskets.",ref:"N° de commande",totalL:"Total",next:x=>`Nous vous appelons au ${x} pour confirmer la livraison.`,shop:"Continuer mes achats",foot:"Le confort commence ici.",contactSub:"Une question ? Écrivez-nous.",deliv:"Mode de livraison",dBureau:"Au bureau ZR Express",dBureauSub:"Vous récupérez au bureau",dHome:"À domicile",commune:"Commune",eCommune:"Entrez votre commune.",eDeliv:"Choisissez le mode de livraison.",promo:"-20% dès 2 paires",sub:"Sous-total",disc:p=>`Réduction −${p}%`,promoHint:"Ajoutez une 2e paire et profitez de -20%."},
-ar:{cur:"دج",lang:"Français",cart:"السلة",slogan:"كل خطوة تستحق أناقة.",sub:"أحذية رياضية مختارة بعناية. اختر الموديل، ثم اللون، ثم المقاس — يصلك حتى باب المنزل.",c1:"توصيل سريع",c2:"جودة مضمونة",c3:"إمكانية التبديل عند الاستلام",ours:"موديلاتنا",oursSub:"اختر موديلاً لمشاهدة الألوان والمقاسات المتوفرة.",colors:n=>n+" ألوان",back:"رجوع",pickSub:"اختر لوناً ثم مقاساً.",ok:"متوفر",no:"غير متوفر",sizes:"المقاسات المتوفرة",add:"أضف إلى السلة",pick:"اختر مقاساً",size:"مقاس",remove:"إزالة",empty:"سلتك فارغة.",total:n=>`المجموع (${n} زوج)`,name:"الاسم الكامل",phone:"رقم الهاتف",wilaya:"اختر الولاية",addr:"العنوان بالتفصيل",note:"ملاحظة (اختياري)",confirm:"تأكيد الطلب",sending:"جارٍ الإرسال…",thanks:"شكراً لك!",thanksSub:"تم تسجيل طلبك. سنتصل بك لتأكيده.",wa:"تأكيد عبر واتساب",close:"إغلاق",contact:"تواصل معنا",loading:"جارٍ تحميل المنتجات…",err:"تعذّر تحميل المنتجات حالياً. تحقق من اتصالك بالإنترنت.",retry:"إعادة المحاولة",none:"لا توجد منتجات حالياً.",wMsg:"مرحباً، أريد طلب:",cta:"اكتشف موديلاتنا",search:"ابحث عن موديل",allCol:"كل الألوان",sort:"ترتيب حسب السعر",asc:"السعر: الأقل أولاً",desc:"السعر: الأعلى أولاً",onlyOk:"المتوفر فقط",how:"كيف تطلب؟",s1:"اختر",s1d:"الموديل واللون والمقاس.",s2:"املأ",s2d:"بياناتك وعنوانك.",s3:"استلم",s3d:"نتصل بك لتأكيد التوصيل.",more:"موديلات أخرى",low:n=>n===1?"بقي مقاس واحد فقط":n===2?"بقي مقاسان فقط":`بقي ${n} مقاسات فقط`,details:"معلوماتك",phone2:"رقم هاتف ثانٍ (اختياري)",eName:"أدخل اسمك الكامل.",ePhone:"رقم غير صحيح (مثال: 0550000000).",eWil:"اختر ولايتك.",eAddr:"أدخل عنوانك بالتفصيل.",cartSlogan:"خطوة واحدة فقط لتصلك أحذيتك.",ref:"رقم الطلب",totalL:"المجموع",next:x=>`سنتصل بك على ${x} لتأكيد التوصيل.`,shop:"متابعة التسوق",foot:"الراحة تبدأ من هنا.",contactSub:"عندك سؤال؟ راسلنا.",deliv:"طريقة التوصيل",dBureau:"إلى مكتب ZR Express",dBureauSub:"تستلم طلبك من المكتب",dHome:"إلى المنزل",commune:"البلدية",eCommune:"أدخل بلديتك.",eDeliv:"اختر طريقة التوصيل.",promo:"خصم 20% عند شراء زوجين",sub:"المجموع الجزئي",disc:p=>`تخفيض ${p}%`,promoHint:"أضف زوجاً ثانياً واستفد من خصم 20%."}};
+fr:{cur:"DA",lang:"العربية",cart:"Panier",slogan:"Chaque pas mérite du style.",sub:"Des baskets choisies avec soin. Choisissez le modèle, la couleur, la pointure — livré jusqu'à votre porte.",c1:"Livraison rapide",c2:"Qualité garantie",c3:"Échange à la réception",ours:"Nos modèles",oursSub:"Choisissez un modèle pour voir les couleurs et pointures disponibles.",colors:n=>n+(n>1?" couleurs":" couleur"),back:"Retour",pickSub:"Choisissez une couleur et une pointure.",ok:"Disponible",no:"Indisponible",sizes:"Pointures disponibles",add:"Ajouter au panier",pick:"Choisissez une pointure",size:"Pointure",remove:"Retirer",empty:"Votre panier est vide.",total:n=>`Total (${n} paire${n>1?"s":""})`,name:"Nom et prénom",phone:"Numéro de téléphone",wilaya:"Choisir la wilaya",addr:"Adresse complète",note:"Remarque (facultatif)",confirm:"Confirmer la commande",sending:"Envoi…",thanks:"Merci !",thanksSub:"Votre commande est enregistrée. Nous vous appellerons pour la confirmer.",wa:"Confirmer sur WhatsApp",close:"Fermer",contact:"Contactez-nous",loading:"Chargement des produits…",err:"Impossible de charger les produits pour le moment. Vérifiez votre connexion.",retry:"Réessayer",none:"Aucun produit pour le moment.",wMsg:"Bonjour, je souhaite commander :",cta:"Découvrir nos modèles",search:"Rechercher un modèle",allCol:"Toutes les couleurs",sort:"Trier par prix",asc:"Prix croissant",desc:"Prix décroissant",onlyOk:"Disponibles",how:"Comment commander",s1:"Choisissez",s1d:"Le modèle, la couleur et la pointure.",s2:"Remplissez",s2d:"Vos coordonnées et votre adresse.",s3:"Recevez",s3d:"Nous vous appelons pour confirmer la livraison.",more:"Autres modèles",low:n=>`Plus que ${n} pointure${n>1?"s":""}`,details:"Vos informations",phone2:"Deuxième numéro (facultatif)",eName:"Entrez votre nom complet.",ePhone:"Numéro invalide (ex. 05 50 00 00 00).",eWil:"Choisissez votre wilaya.",eAddr:"Entrez votre adresse complète.",cartSlogan:"Plus qu'une étape pour recevoir vos baskets.",ref:"N° de commande",totalL:"Total",next:x=>`Nous vous appelons au ${x} pour confirmer la livraison.`,shop:"Continuer mes achats",foot:"Le confort commence ici.",contactSub:"Une question ? Écrivez-nous.",deliv:"Mode de livraison",dBureau:"Au bureau ZR Express",dBureauSub:"Vous récupérez au bureau",dHome:"À domicile",commune:"Commune",eCommune:"Entrez votre commune.",eDeliv:"Choisissez le mode de livraison.",promo:"-20% dès 2 paires",sub:"Sous-total",disc:p=>`Réduction −${p}%`,promoHint:"Ajoutez une 2e paire et profitez de -20%.",added:"Ajouté au panier",viewCart:"Voir le panier",promoOn:"Réduction -20% appliquée !",promoEx:(a,b)=>`2 paires : ${b} au lieu de ${a}`},
+ar:{cur:"دج",lang:"Français",cart:"السلة",slogan:"كل خطوة تستحق أناقة.",sub:"أحذية رياضية مختارة بعناية. اختر الموديل، ثم اللون، ثم المقاس — يصلك حتى باب المنزل.",c1:"توصيل سريع",c2:"جودة مضمونة",c3:"إمكانية التبديل عند الاستلام",ours:"موديلاتنا",oursSub:"اختر موديلاً لمشاهدة الألوان والمقاسات المتوفرة.",colors:n=>n+" ألوان",back:"رجوع",pickSub:"اختر لوناً ثم مقاساً.",ok:"متوفر",no:"غير متوفر",sizes:"المقاسات المتوفرة",add:"أضف إلى السلة",pick:"اختر مقاساً",size:"مقاس",remove:"إزالة",empty:"سلتك فارغة.",total:n=>`المجموع (${n} زوج)`,name:"الاسم الكامل",phone:"رقم الهاتف",wilaya:"اختر الولاية",addr:"العنوان بالتفصيل",note:"ملاحظة (اختياري)",confirm:"تأكيد الطلب",sending:"جارٍ الإرسال…",thanks:"شكراً لك!",thanksSub:"تم تسجيل طلبك. سنتصل بك لتأكيده.",wa:"تأكيد عبر واتساب",close:"إغلاق",contact:"تواصل معنا",loading:"جارٍ تحميل المنتجات…",err:"تعذّر تحميل المنتجات حالياً. تحقق من اتصالك بالإنترنت.",retry:"إعادة المحاولة",none:"لا توجد منتجات حالياً.",wMsg:"مرحباً، أريد طلب:",cta:"اكتشف موديلاتنا",search:"ابحث عن موديل",allCol:"كل الألوان",sort:"ترتيب حسب السعر",asc:"السعر: الأقل أولاً",desc:"السعر: الأعلى أولاً",onlyOk:"المتوفر فقط",how:"كيف تطلب؟",s1:"اختر",s1d:"الموديل واللون والمقاس.",s2:"املأ",s2d:"بياناتك وعنوانك.",s3:"استلم",s3d:"نتصل بك لتأكيد التوصيل.",more:"موديلات أخرى",low:n=>n===1?"بقي مقاس واحد فقط":n===2?"بقي مقاسان فقط":`بقي ${n} مقاسات فقط`,details:"معلوماتك",phone2:"رقم هاتف ثانٍ (اختياري)",eName:"أدخل اسمك الكامل.",ePhone:"رقم غير صحيح (مثال: 0550000000).",eWil:"اختر ولايتك.",eAddr:"أدخل عنوانك بالتفصيل.",cartSlogan:"خطوة واحدة فقط لتصلك أحذيتك.",ref:"رقم الطلب",totalL:"المجموع",next:x=>`سنتصل بك على ${x} لتأكيد التوصيل.`,shop:"متابعة التسوق",foot:"الراحة تبدأ من هنا.",contactSub:"عندك سؤال؟ راسلنا.",deliv:"طريقة التوصيل",dBureau:"إلى مكتب ZR Express",dBureauSub:"تستلم طلبك من المكتب",dHome:"إلى المنزل",commune:"البلدية",eCommune:"أدخل بلديتك.",eDeliv:"اختر طريقة التوصيل.",promo:"خصم 20% عند شراء زوجين",sub:"المجموع الجزئي",disc:p=>`تخفيض ${p}%`,promoHint:"أضف زوجاً ثانياً واستفد من خصم 20%.",added:"تمت الإضافة للسلة",viewCart:"عرض السلة",promoOn:"تم تطبيق خصم 20%!",promoEx:(a,b)=>`زوجان: ${b} بدل ${a}`}};
 
 /* ===== TOOLS ===== */
 const $=s=>document.querySelector(s);
@@ -228,20 +239,25 @@ const store=(k,v)=>{try{return v===undefined?JSON.parse(localStorage.getItem(k))
 /* ===== STATE ===== */
 let P=[],L={},cart=store("si_cart")||[],cur=null,sel={};
 
-async function init(){
-  $("#state").hidden=false;$("#state").innerHTML=`<div class="spin"></div><p>${t("loading")}</p>`;
-  try{
-    const r=await fetch(CONFIG.API);if(!r.ok)throw new Error("HTTP "+r.status);
-    const txt=await r.text();let d;try{d=JSON.parse(txt)}catch{throw new Error("The script did not return JSON (is the deployment public: Anyone?)")}
-    const vars=d.variantes||[];
+function build(d){
+  const vars=d.variantes||[];
     P=(d.categories||[]).map(c=>({id:String(c.Category),name:c.Name,price:Number(c.Price)||0,img:c.ImageURL,
       v:vars.filter(v=>String(v.Category)===String(c.Category)).map(v=>{const dk=Object.keys(v).find(k=>k.toLowerCase().startsWith("dispo"));
         return{col:String(v.Colour).trim(),img:v.ImageURL,sizes:String(v.Sizes).split(/[\s,;\/]+/).filter(Boolean).sort((a,b)=>a-b),ok:String(v[dk]).trim().toLowerCase()==="oui"}})}));
     L=d.links||{};
     cart=cart.filter(i=>P.find(p=>p.id===i.pid&&p.v[i.vi]));
+}
+async function init(){
+  const cached=store("si_data");if(cached){try{build(cached);if(P.length){$("#state").hidden=true;buildTools();show()}}catch(e){console.warn(e)}}
+  $("#state").hidden=false;$("#state").innerHTML=skel();
+  try{
+    const r=await fetch(CONFIG.API);if(!r.ok)throw new Error("HTTP "+r.status);
+    const txt=await r.text();let d;try{d=JSON.parse(txt)}catch{throw new Error("The script did not return JSON (is the deployment public: Anyone?)")}
+    store("si_data",d);build(d);
     if(!P.length){$("#state").innerHTML=`<p>${t("none")}</p>`;return}
     $("#state").hidden=true;buildTools();show();
   }catch(e){
+    if(P.length){console.warn(e);return}
     console.error(e);
     $("#state").innerHTML=`<p>${t("err")}</p><p class="mute" dir="ltr" style="margin:8px 0 14px;font-size:.8rem">${esc(e.message||e)}</p><button class="pill" id="retry">${t("retry")}</button>`;
     $("#retry").onclick=init;
@@ -270,6 +286,14 @@ wa:'<path d="M4 20l1.300-4A8 8 0 1 1 8 18.700z"/><path d="M9 9c0 3 3 6 6 6l1-2-2
 tt:'<path d="M14 3v11a4 4 0 1 1-4-4"/><path d="M14 3c0 3 2 5 5 5"/>'};
 const ic=(n,z=18)=>`<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||""}</svg>`;
 const fld=(i,l,inner)=>`<label class="fld"><span class="fl">${ic(i,16)}${l}</span>${inner}</label>`;
+const skel=()=>`<div class="grid">${'<div class="card sk"><div class="frame"><div class="ph"></div></div><div class="info"><i></i><i></i></div></div>'.repeat(4)}</div>`;
+let tmr;function toast(m){let e=$("#toast");if(!e){e=document.createElement("div");e.id="toast";e.className="toast";e.setAttribute("role","status");document.body.append(e)}e.innerHTML=ic("check",18)+m;e.hidden=false;clearTimeout(tmr);tmr=setTimeout(()=>e.hidden=true,3000)}
+function bar(){
+  const n=cart.reduce((a,i)=>a+i.qty,0),sum=cart.reduce((a,i)=>a+line(i).p.price*i.qty,0),D=CONFIG.DISCOUNT,net=sum-(n>=D.min?Math.round(sum*D.pct/100):0),b=$("#cbar");
+  b.hidden=!n||!$("#drawer").hidden;
+  b.innerHTML=`<span class="row2">${ic("cart",20)}${t("viewCart")} (${n})</span><span class="price">${money(net)}</span>`;
+  document.body.classList.toggle("hascart",!b.hidden);
+}
 const norm=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const COLORS={noir:"#1b1b1d",blanc:"#f5f5f2",gris:"#8b9098",beige:"#d8c3a5",bleu:"#3b6ea8",rouge:"#c0392b",vert:"#4f7a5a",marron:"#7a5638"};
 const F={q:"",col:"",sort:"",ok:false};
@@ -305,14 +329,14 @@ function show(){
   if(cur===null){
     home();
   }else{
-    const p=P[cur];$("#p-name").textContent=p.name;$("#p-price").textContent=money(p.price);
+    const p=P[cur];$("#p-name").textContent=p.name;$("#p-price").textContent=money(p.price);$("#promoTxt").textContent=t("promo")+" — "+t("promoEx")(money(p.price*2),money(Math.round(p.price*2*(100-CONFIG.DISCOUNT.pct)/100)));
     $("#vgrid").innerHTML=p.v.map((v,j)=>`<article class="card" data-j="${j}"><div class="frame">${img(v.img||p.img,p.name+" "+v.col,v.ok?"":"off")}<span class="tag ${v.ok?"ok":"no"}">${v.ok?t("ok"):t("no")}</span></div>
       <div class="info"><h3>${esc(cap(v.col))}</h3><span class="mute">${t("sizes")}</span>${v.ok&&v.sizes.length<=2?`<span class="low">${t("low")(v.sizes.length)}</span>`:""}
       <div class="sizes">${v.sizes.map(z=>`<button class="sz ${sel[j]===z?"on":""}" data-z="${esc(z)}" ${v.ok?"":"disabled"}>${esc(z)}</button>`).join("")}</div>
       <button class="btn" data-add ${v.ok&&sel[j]?"":"disabled"} style="margin-top:auto">${v.ok&&sel[j]?ic("cart",18):""}${v.ok?(sel[j]?t("add"):t("pick")):t("no")}</button></div></article>`).join("");
     $("#more-grid").innerHTML=P.map((_,i)=>i).filter(i=>i!==cur).slice(0,3).map(cardHome).join("");
   }
-  socials();fab();
+  socials();fab();bar();
 }
 const openModel=e=>{const c=e.target.closest(".card");if(c){cur=+c.dataset.i;sel={};show();scrollTo(0,0)}};
 ["#grid","#more-grid"].forEach(k=>{$(k).onclick=openModel;$(k).onkeydown=e=>{if(e.key==="Enter")openModel(e)}});
@@ -324,7 +348,7 @@ $("#vgrid").onclick=e=>{if(e.target.tagName==="IMG"){lightbox(e.target.src);retu
   else if(b.hasAttribute("data-add")&&!b.disabled){
     const f=cart.find(i=>i.pid===P[cur].id&&i.vi===j&&i.size===sel[j]);
     f?f.qty++:cart.push({pid:P[cur].id,vi:j,size:sel[j],qty:1});
-    store("si_cart",cart);show();openCart();
+    store("si_cart",cart);show();const nn=cart.reduce((a,i)=>a+i.qty,0);toast(t("added")+" · "+(nn<CONFIG.DISCOUNT.min?t("promoHint"):t("promoOn")));
   }
 };
 $("#lang").onclick=()=>{lang=lang==="ar"?"fr":"ar";localStorage.setItem("si_lang",lang);if(P.length)buildTools();show();if(!$("#drawer").hidden)renderCart()};
@@ -339,8 +363,9 @@ function socials(){
 
 /* ===== CART ===== */
 const line=i=>{const p=P.find(x=>x.id===i.pid);return{p,v:p.v[i.vi]}};
-function openCart(){$("#shade").hidden=$("#drawer").hidden=false;document.body.style.overflow="hidden";renderCart()}
-function closeCart(){$("#shade").hidden=$("#drawer").hidden=true;document.body.style.overflow=""}
+function openCart(){$("#shade").hidden=$("#drawer").hidden=false;document.body.style.overflow="hidden";renderCart();$("#cbar").hidden=true}
+function closeCart(){$("#shade").hidden=$("#drawer").hidden=true;document.body.style.overflow="";if(P.length)bar()}
+$("#cbar").onclick=()=>openCart();
 $("#cart-btn").onclick=openCart;$("#shade").onclick=closeCart;
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeCart();document.querySelector(".lb")?.remove()}});
 function renderCart(){
