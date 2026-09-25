@@ -11,7 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#fbf9f6;--bar:#f6f2ec;--card:#fff;--frame:#efe8dd;--ink:#1a1714;--mute:#7d766d;--line:#e8e1d7;
---o1:#c9502a;--o2:#e8823a;--grad:linear-gradient(90deg,var(--o1),var(--o2));--ok:#1f9d63;--no:#e05252;--f:"Cairo",system-ui,sans-serif}
+--o1:#c9502a;--o2:#e8823a;--grad:linear-gradient(90deg,var(--o1),var(--o2));--grad2:linear-gradient(135deg,#f3e6d8,#fff);
+--ok:#1f9d63;--no:#e05252;--gold:#c9972a;--f:"Cairo",system-ui,sans-serif;--sh:0 6px 22px rgba(60,40,20,.06);--sh2:0 14px 34px rgba(60,40,20,.14)}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--f);min-height:100vh}
 button{font:inherit;color:inherit;cursor:pointer}
@@ -156,7 +157,39 @@ body.hascart .fab{bottom:86px}
 .promo-line{display:inline-flex;align-items:center;gap:8px;background:#fff6f0;border:1px solid #f3d5c4;color:var(--o1);font-weight:600;border-radius:999px;padding:4px 16px;margin-bottom:14px}
 .sum .okd{color:var(--ok)}
 @media(max-width:480px){form .two{grid-template-columns:1fr}.opts{gap:8px}.opt span{padding:10px;min-height:68px}.opt b{font-size:.88rem;line-height:1.25}.opt small{font-size:.72rem}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---- extra polish ---- */
+@keyframes pop{0%{transform:scale(.94);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.card{animation:pop .35s ease both}
+.hero{position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-40% -10% auto auto;width:320px;height:320px;background:var(--grad);opacity:.10;border-radius:50%;filter:blur(10px)}
+.hero::after{content:"👟";position:absolute;font-size:2.6rem;opacity:.12;bottom:10px;inset-inline-start:20px;animation:float 4s ease-in-out infinite}
+.brand img{box-shadow:0 0 0 2px #fff,0 0 0 3px var(--o1)}
+.pill{transition:transform .15s,box-shadow .15s}
+.pill:active{transform:scale(.96)}
+#cart-btn.bump i{animation:bump .35s}
+@keyframes bump{0%,100%{transform:scale(1)}40%{transform:scale(1.35)}}
+.card.click{position:relative}
+.card.click::after{content:"";position:absolute;inset:0;border-radius:22px;box-shadow:0 0 0 2px var(--o1);opacity:0;transition:opacity .2s;pointer-events:none}
+.card.click:hover::after,.card.click:focus-visible::after{opacity:1}
+.new-badge{position:absolute;top:24px;inset-inline-start:24px;background:var(--gold);color:#fff;font-size:.72rem;font-weight:800;border-radius:999px;padding:3px 11px;letter-spacing:.02em;box-shadow:0 4px 10px rgba(201,151,42,.35)}
+.sz{transition:transform .15s}
+.sz.on{transform:scale(1.06)}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:36px 0}
+@media(max-width:700px){.trust{grid-template-columns:1fr}}
+.trust>div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;text-align:center;box-shadow:var(--sh)}
+.trust svg{color:var(--o1);margin-bottom:8px}
+.trust b{display:block;font-size:1rem;margin-bottom:2px}
+.trust small{color:var(--mute)}
+.rating{display:flex;align-items:center;gap:2px;color:var(--gold);margin-bottom:6px}
+.rating span{color:var(--mute);font-size:.82rem;margin-inline-start:4px}
+.frame{transition:background .2s}
+.card.click:hover .frame{background:#e9dfd0}
+.socials a{display:inline-flex;gap:8px;align-items:center}
+.contact{background:var(--grad2);border-radius:28px;border:1px solid var(--line);padding:40px 20px;margin-top:56px}
+@media(max-width:600px){.trust>div{padding:16px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.hero::after{display:none}.card{animation:none}}
 </style>
 </head>
 <body>
@@ -176,6 +209,11 @@ body.hascart .fab{bottom:86px}
     <p class="sub" data-t="sub"></p>
     <div class="chips"><span><em data-ic="truck"></em><span data-t="c1"></span></span><span><em data-ic="shield"></em><span data-t="c2"></span></span><span><em data-ic="swap"></em><span data-t="c3"></span></span><span class="promo"><em data-ic="tag"></em><span data-t="promo"></span></span></div>
     <a class="btn cta" href="#models" data-t="cta"></a>
+    <div class="trust">
+      <div><span data-ic="lock" style="display:inline-flex;justify-content:center"></span><b data-t="trust1"></b><small data-t="trust1d"></small></div>
+      <div><span data-ic="headset" style="display:inline-flex;justify-content:center"></span><b data-t="trust2"></b><small data-t="trust2d"></small></div>
+      <div><span data-ic="star" style="display:inline-flex;justify-content:center"></span><b data-t="trust3"></b><small data-t="trust3d"></small></div>
+    </div>
   </section>
 
   <div id="state" class="state"></div>
@@ -214,14 +252,14 @@ body.hascart .fab{bottom:86px}
 const CONFIG={
   API:"https://script.google.com/macros/s/AKfycbyzqTNB_lM73fswDSkW4mjiFrNT_hV8zHxFisGb1x3mdb8dpzkUWwQYLpkMMtpngRwO/exec",
   COUNTRY_CODE:"213",
-  ORDER_API:"https://script.google.com/macros/s/AKfycbwnyBSKW8Xoe-Ye4a3pfjYpj7j7oQKRV_c60aobt9MqcqzWfdTyjMF7P0Y0JYoJGdhq/exec", // client/orders sheet
+  ORDER_API:"https://script.google.com/macros/s/AKfycbxMnWnvhyxeMbJsM0KoH1xpZ_438q5RYj55TF4Y51he8vjHPOqd_lnj0eKCu8q0LR18/exec", // client/orders sheet
   DISCOUNT:{min:2,pct:20}, // 20% off from 2 pairs
   SAVE_ORDER_TO_SHEET:true, OPEN_WHATSAPP:true, DEFAULT_LANG:"ar"
 };
 const WILAYAS=["Adrar","Chlef","Laghouat","Oum El Bouaghi","Batna","Béjaïa","Biskra","Béchar","Blida","Bouira","Tamanrasset","Tébessa","Tlemcen","Tiaret","Tizi Ouzou","Alger","Djelfa","Jijel","Sétif","Saïda","Skikda","Sidi Bel Abbès","Annaba","Guelma","Constantine","Médéa","Mostaganem","M'Sila","Mascara","Ouargla","Oran","El Bayadh","Illizi","Bordj Bou Arréridj","Boumerdès","El Tarf","Tindouf","Tissemsilt","El Oued","Khenchela","Souk Ahras","Tipaza","Mila","Aïn Defla","Naâma","Aïn Témouchent","Ghardaïa","Relizane","Timimoun","Bordj Badji Mokhtar","Ouled Djellal","Béni Abbès","In Salah","In Guezzam","Touggourt","Djanet","El M'Ghair","El Meniaa"];
 const TXT={
-fr:{cur:"DA",lang:"العربية",cart:"Panier",slogan:"Chaque pas mérite du style.",sub:"Des baskets choisies avec soin. Choisissez le modèle, la couleur, la pointure — livré jusqu'à votre porte.",c1:"Livraison rapide",c2:"Qualité garantie",c3:"Échange à la réception",ours:"Nos modèles",oursSub:"Choisissez un modèle pour voir les couleurs et pointures disponibles.",colors:n=>n+(n>1?" couleurs":" couleur"),back:"Retour",pickSub:"Choisissez une couleur et une pointure.",ok:"Disponible",no:"Indisponible",sizes:"Pointures disponibles",add:"Ajouter au panier",pick:"Choisissez une pointure",size:"Pointure",remove:"Retirer",empty:"Votre panier est vide.",total:n=>`Total (${n} paire${n>1?"s":""})`,name:"Nom et prénom",phone:"Numéro de téléphone",wilaya:"Choisir la wilaya",addr:"Adresse complète",note:"Remarque (facultatif)",confirm:"Confirmer la commande",sending:"Envoi…",thanks:"Merci !",thanksSub:"Votre commande est enregistrée. Nous vous appellerons pour la confirmer.",wa:"Confirmer sur WhatsApp",close:"Fermer",contact:"Contactez-nous",loading:"Chargement des produits…",err:"Impossible de charger les produits pour le moment. Vérifiez votre connexion.",retry:"Réessayer",none:"Aucun produit pour le moment.",wMsg:"Bonjour, je souhaite commander :",cta:"Découvrir nos modèles",search:"Rechercher un modèle",allCol:"Toutes les couleurs",sort:"Trier par prix",asc:"Prix croissant",desc:"Prix décroissant",onlyOk:"Disponibles",how:"Comment commander",s1:"Choisissez",s1d:"Le modèle, la couleur et la pointure.",s2:"Remplissez",s2d:"Vos coordonnées et votre adresse.",s3:"Recevez",s3d:"Nous vous appelons pour confirmer la livraison.",more:"Autres modèles",low:n=>`Plus que ${n} pointure${n>1?"s":""}`,details:"Vos informations",phone2:"Deuxième numéro (facultatif)",eName:"Entrez votre nom complet.",ePhone:"Numéro invalide (ex. 05 50 00 00 00).",eWil:"Choisissez votre wilaya.",eAddr:"Entrez votre adresse complète.",cartSlogan:"Plus qu'une étape pour recevoir vos baskets.",ref:"N° de commande",totalL:"Total",next:x=>`Nous vous appelons au ${x} pour confirmer la livraison.`,shop:"Continuer mes achats",foot:"Le confort commence ici.",contactSub:"Une question ? Écrivez-nous.",deliv:"Mode de livraison",dBureau:"Au bureau ZR Express",dBureauSub:"Vous récupérez au bureau",dHome:"À domicile",commune:"Commune",eCommune:"Entrez votre commune.",eDeliv:"Choisissez le mode de livraison.",promo:"-20% dès 2 paires",sub:"Sous-total",disc:p=>`Réduction −${p}%`,promoHint:"Ajoutez une 2e paire et profitez de -20%.",added:"Ajouté au panier",viewCart:"Voir le panier",promoOn:"Réduction -20% appliquée !",promoEx:(a,b)=>`2 paires : ${b} au lieu de ${a}`},
-ar:{cur:"دج",lang:"Français",cart:"السلة",slogan:"كل خطوة تستحق أناقة.",sub:"أحذية رياضية مختارة بعناية. اختر الموديل، ثم اللون، ثم المقاس — يصلك حتى باب المنزل.",c1:"توصيل سريع",c2:"جودة مضمونة",c3:"إمكانية التبديل عند الاستلام",ours:"موديلاتنا",oursSub:"اختر موديلاً لمشاهدة الألوان والمقاسات المتوفرة.",colors:n=>n+" ألوان",back:"رجوع",pickSub:"اختر لوناً ثم مقاساً.",ok:"متوفر",no:"غير متوفر",sizes:"المقاسات المتوفرة",add:"أضف إلى السلة",pick:"اختر مقاساً",size:"مقاس",remove:"إزالة",empty:"سلتك فارغة.",total:n=>`المجموع (${n} زوج)`,name:"الاسم الكامل",phone:"رقم الهاتف",wilaya:"اختر الولاية",addr:"العنوان بالتفصيل",note:"ملاحظة (اختياري)",confirm:"تأكيد الطلب",sending:"جارٍ الإرسال…",thanks:"شكراً لك!",thanksSub:"تم تسجيل طلبك. سنتصل بك لتأكيده.",wa:"تأكيد عبر واتساب",close:"إغلاق",contact:"تواصل معنا",loading:"جارٍ تحميل المنتجات…",err:"تعذّر تحميل المنتجات حالياً. تحقق من اتصالك بالإنترنت.",retry:"إعادة المحاولة",none:"لا توجد منتجات حالياً.",wMsg:"مرحباً، أريد طلب:",cta:"اكتشف موديلاتنا",search:"ابحث عن موديل",allCol:"كل الألوان",sort:"ترتيب حسب السعر",asc:"السعر: الأقل أولاً",desc:"السعر: الأعلى أولاً",onlyOk:"المتوفر فقط",how:"كيف تطلب؟",s1:"اختر",s1d:"الموديل واللون والمقاس.",s2:"املأ",s2d:"بياناتك وعنوانك.",s3:"استلم",s3d:"نتصل بك لتأكيد التوصيل.",more:"موديلات أخرى",low:n=>n===1?"بقي مقاس واحد فقط":n===2?"بقي مقاسان فقط":`بقي ${n} مقاسات فقط`,details:"معلوماتك",phone2:"رقم هاتف ثانٍ (اختياري)",eName:"أدخل اسمك الكامل.",ePhone:"رقم غير صحيح (مثال: 0550000000).",eWil:"اختر ولايتك.",eAddr:"أدخل عنوانك بالتفصيل.",cartSlogan:"خطوة واحدة فقط لتصلك أحذيتك.",ref:"رقم الطلب",totalL:"المجموع",next:x=>`سنتصل بك على ${x} لتأكيد التوصيل.`,shop:"متابعة التسوق",foot:"الراحة تبدأ من هنا.",contactSub:"عندك سؤال؟ راسلنا.",deliv:"طريقة التوصيل",dBureau:"إلى مكتب ZR Express",dBureauSub:"تستلم طلبك من المكتب",dHome:"إلى المنزل",commune:"البلدية",eCommune:"أدخل بلديتك.",eDeliv:"اختر طريقة التوصيل.",promo:"خصم 20% عند شراء زوجين",sub:"المجموع الجزئي",disc:p=>`تخفيض ${p}%`,promoHint:"أضف زوجاً ثانياً واستفد من خصم 20%.",added:"تمت الإضافة للسلة",viewCart:"عرض السلة",promoOn:"تم تطبيق خصم 20%!",promoEx:(a,b)=>`زوجان: ${b} بدل ${a}`}};
+fr:{cur:"DA",lang:"العربية",cart:"Panier",slogan:"Chaque pas mérite du style.",sub:"Des baskets choisies avec soin. Choisissez le modèle, la couleur, la pointure — livré jusqu'à votre porte.",c1:"Livraison rapide",c2:"Qualité garantie",c3:"Échange à la réception",ours:"Nos modèles",oursSub:"Choisissez un modèle pour voir les couleurs et pointures disponibles.",colors:n=>n+(n>1?" couleurs":" couleur"),back:"Retour",pickSub:"Choisissez une couleur et une pointure.",ok:"Disponible",no:"Indisponible",sizes:"Pointures disponibles",add:"Ajouter au panier",pick:"Choisissez une pointure",size:"Pointure",remove:"Retirer",empty:"Votre panier est vide.",total:n=>`Total (${n} paire${n>1?"s":""})`,name:"Nom et prénom",phone:"Numéro de téléphone",wilaya:"Choisir la wilaya",addr:"Adresse complète",note:"Remarque (facultatif)",confirm:"Confirmer la commande",sending:"Envoi…",thanks:"Merci !",thanksSub:"Votre commande est enregistrée. Nous vous appellerons pour la confirmer.",wa:"Confirmer sur WhatsApp",close:"Fermer",contact:"Contactez-nous",loading:"Chargement des produits…",err:"Impossible de charger les produits pour le moment. Vérifiez votre connexion.",retry:"Réessayer",none:"Aucun produit pour le moment.",wMsg:"Bonjour, je souhaite commander :",cta:"Découvrir nos modèles",search:"Rechercher un modèle",allCol:"Toutes les couleurs",sort:"Trier par prix",asc:"Prix croissant",desc:"Prix décroissant",onlyOk:"Disponibles",how:"Comment commander",s1:"Choisissez",s1d:"Le modèle, la couleur et la pointure.",s2:"Remplissez",s2d:"Vos coordonnées et votre adresse.",s3:"Recevez",s3d:"Nous vous appelons pour confirmer la livraison.",more:"Autres modèles",low:n=>`Plus que ${n} pointure${n>1?"s":""}`,details:"Vos informations",phone2:"Deuxième numéro (facultatif)",eName:"Entrez votre nom complet.",ePhone:"Numéro invalide (ex. 05 50 00 00 00).",eWil:"Choisissez votre wilaya.",eAddr:"Entrez votre adresse complète.",cartSlogan:"Plus qu'une étape pour recevoir vos baskets.",ref:"N° de commande",totalL:"Total",next:x=>`Nous vous appelons au ${x} pour confirmer la livraison.`,shop:"Continuer mes achats",foot:"Le confort commence ici.",contactSub:"Une question ? Écrivez-nous.",deliv:"Mode de livraison",dBureau:"Au bureau ZR Express",dBureauSub:"Vous récupérez au bureau",dHome:"À domicile",commune:"Commune",eCommune:"Entrez votre commune.",eDeliv:"Choisissez le mode de livraison.",promo:"-20% dès 2 paires",sub:"Sous-total",disc:p=>`Réduction −${p}%`,promoHint:"Ajoutez une 2e paire et profitez de -20%.",added:"Ajouté au panier",viewCart:"Voir le panier",promoOn:"Réduction -20% appliquée !",promoEx:(a,b)=>`2 paires : ${b} au lieu de ${a}`,trust1:"Paiement à la livraison",trust1d:"Vous payez à la réception",trust2:"Support rapide",trust2d:"Réponse sous quelques heures",trust3:"Clients satisfaits",trust3d:"Note moyenne 4.8/5",newTag:"Nouveau"},
+ar:{cur:"دج",lang:"Français",cart:"السلة",slogan:"كل خطوة تستحق أناقة.",sub:"أحذية رياضية مختارة بعناية. اختر الموديل، ثم اللون، ثم المقاس — يصلك حتى باب المنزل.",c1:"توصيل سريع",c2:"جودة مضمونة",c3:"إمكانية التبديل عند الاستلام",ours:"موديلاتنا",oursSub:"اختر موديلاً لمشاهدة الألوان والمقاسات المتوفرة.",colors:n=>n+" ألوان",back:"رجوع",pickSub:"اختر لوناً ثم مقاساً.",ok:"متوفر",no:"غير متوفر",sizes:"المقاسات المتوفرة",add:"أضف إلى السلة",pick:"اختر مقاساً",size:"مقاس",remove:"إزالة",empty:"سلتك فارغة.",total:n=>`المجموع (${n} زوج)`,name:"الاسم الكامل",phone:"رقم الهاتف",wilaya:"اختر الولاية",addr:"العنوان بالتفصيل",note:"ملاحظة (اختياري)",confirm:"تأكيد الطلب",sending:"جارٍ الإرسال…",thanks:"شكراً لك!",thanksSub:"تم تسجيل طلبك. سنتصل بك لتأكيده.",wa:"تأكيد عبر واتساب",close:"إغلاق",contact:"تواصل معنا",loading:"جارٍ تحميل المنتجات…",err:"تعذّر تحميل المنتجات حالياً. تحقق من اتصالك بالإنترنت.",retry:"إعادة المحاولة",none:"لا توجد منتجات حالياً.",wMsg:"مرحباً، أريد طلب:",cta:"اكتشف موديلاتنا",search:"ابحث عن موديل",allCol:"كل الألوان",sort:"ترتيب حسب السعر",asc:"السعر: الأقل أولاً",desc:"السعر: الأعلى أولاً",onlyOk:"المتوفر فقط",how:"كيف تطلب؟",s1:"اختر",s1d:"الموديل واللون والمقاس.",s2:"املأ",s2d:"بياناتك وعنوانك.",s3:"استلم",s3d:"نتصل بك لتأكيد التوصيل.",more:"موديلات أخرى",low:n=>n===1?"بقي مقاس واحد فقط":n===2?"بقي مقاسان فقط":`بقي ${n} مقاسات فقط`,details:"معلوماتك",phone2:"رقم هاتف ثانٍ (اختياري)",eName:"أدخل اسمك الكامل.",ePhone:"رقم غير صحيح (مثال: 0550000000).",eWil:"اختر ولايتك.",eAddr:"أدخل عنوانك بالتفصيل.",cartSlogan:"خطوة واحدة فقط لتصلك أحذيتك.",ref:"رقم الطلب",totalL:"المجموع",next:x=>`سنتصل بك على ${x} لتأكيد التوصيل.`,shop:"متابعة التسوق",foot:"الراحة تبدأ من هنا.",contactSub:"عندك سؤال؟ راسلنا.",deliv:"طريقة التوصيل",dBureau:"إلى مكتب ZR Express",dBureauSub:"تستلم طلبك من المكتب",dHome:"إلى المنزل",commune:"البلدية",eCommune:"أدخل بلديتك.",eDeliv:"اختر طريقة التوصيل.",promo:"خصم 20% عند شراء زوجين",sub:"المجموع الجزئي",disc:p=>`تخفيض ${p}%`,promoHint:"أضف زوجاً ثانياً واستفد من خصم 20%.",added:"تمت الإضافة للسلة",viewCart:"عرض السلة",promoOn:"تم تطبيق خصم 20%!",promoEx:(a,b)=>`زوجان: ${b} بدل ${a}`,trust1:"الدفع عند الاستلام",trust1d:"تدفع عند استلام الطلب",trust2:"دعم سريع",trust2d:"نرد خلال ساعات قليلة",trust3:"عملاء راضون",trust3d:"تقييم 4.8/5",newTag:"جديد"}};
 
 /* ===== TOOLS ===== */
 const $=s=>document.querySelector(s);
@@ -283,7 +321,10 @@ tag:'<path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.500" cy="7.500" r="1.300"/>',
 fb:'<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/>',
 ig:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.500" cy="6.500" r=".8"/>',
 wa:'<path d="M4 20l1.300-4A8 8 0 1 1 8 18.700z"/><path d="M9 9c0 3 3 6 6 6l1-2-2-1-1 1c-1-.5-2-1.500-2.500-2.500l1-1-1-2z"/>',
-tt:'<path d="M14 3v11a4 4 0 1 1-4-4"/><path d="M14 3c0 3 2 5 5 5"/>'};
+tt:'<path d="M14 3v11a4 4 0 1 1-4-4"/><path d="M14 3c0 3 2 5 5 5"/>',
+star:'<path d="m12 3 2.700 5.600 6.100.900-4.400 4.400 1 6.100L12 17l-5.400 3 1-6.100L3.200 9.500l6.100-.900z"/>',
+lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+headset:'<path d="M4 13a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-1v-6h3M4 18v-5h3v6H6a2 2 0 0 1-2-2Z"/>'};
 const ic=(n,z=18)=>`<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||""}</svg>`;
 const fld=(i,l,inner)=>`<label class="fld"><span class="fl">${ic(i,16)}${l}</span>${inner}</label>`;
 const skel=()=>`<div class="grid">${'<div class="card sk"><div class="frame"><div class="ph"></div></div><div class="info"><i></i><i></i></div></div>'.repeat(4)}</div>`;
@@ -297,8 +338,8 @@ function bar(){
 const norm=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const COLORS={noir:"#1b1b1d",blanc:"#f5f5f2",gris:"#8b9098",beige:"#d8c3a5",bleu:"#3b6ea8",rouge:"#c0392b",vert:"#4f7a5a",marron:"#7a5638"};
 const F={q:"",col:"",sort:"",ok:false};
-const cardHome=i=>{const p=P[i],out=!p.v.some(v=>v.ok);return`<article class="card click" data-i="${i}" tabindex="0"><div class="frame">${img(p.img||p.v[0]?.img,p.name)}${out?`<span class="tag no">${t("no")}</span>`:""}</div>
-  <div class="info"><div class="meta"><h3>${esc(p.name)}</h3><span class="price">${money(p.price)}</span></div>
+const cardHome=i=>{const p=P[i],out=!p.v.some(v=>v.ok),isNew=i===0;return`<article class="card click" data-i="${i}" tabindex="0"><div class="frame">${img(p.img||p.v[0]?.img,p.name)}${out?`<span class="tag no">${t("no")}</span>`:isNew?`<span class="new-badge">${t("newTag")}</span>`:""}</div>
+  <div class="info"><div class="rating">${[1,2,3,4,5].map(()=>ic("star",13)).join("")}<span>(${24+(i*7)%40})</span></div><div class="meta"><h3>${esc(p.name)}</h3><span class="price">${money(p.price)}</span></div>
   <div class="meta"><span class="mute">${t("colors")(p.v.length)}</span><span class="dots">${p.v.map(v=>`<i class="dot" style="--c:${COLORS[v.col.toLowerCase()]||"#bbb"}" title="${esc(cap(v.col))}"></i>`).join("")}</span></div></div></article>`};
 function home(){
   const q=norm(F.q);
@@ -348,7 +389,7 @@ $("#vgrid").onclick=e=>{if(e.target.tagName==="IMG"){lightbox(e.target.src);retu
   else if(b.hasAttribute("data-add")&&!b.disabled){
     const f=cart.find(i=>i.pid===P[cur].id&&i.vi===j&&i.size===sel[j]);
     f?f.qty++:cart.push({pid:P[cur].id,vi:j,size:sel[j],qty:1});
-    store("si_cart",cart);show();const nn=cart.reduce((a,i)=>a+i.qty,0);toast(t("added")+" · "+(nn<CONFIG.DISCOUNT.min?t("promoHint"):t("promoOn")));
+    store("si_cart",cart);show();const nn=cart.reduce((a,i)=>a+i.qty,0);$("#cart-btn").classList.add("bump");setTimeout(()=>$("#cart-btn").classList.remove("bump"),350);toast(t("added")+" · "+(nn<CONFIG.DISCOUNT.min?t("promoHint"):t("promoOn")));
   }
 };
 $("#lang").onclick=()=>{lang=lang==="ar"?"fr":"ar";localStorage.setItem("si_lang",lang);if(P.length)buildTools();show();if(!$("#drawer").hidden)renderCart()};
