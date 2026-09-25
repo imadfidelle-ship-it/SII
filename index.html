@@ -86,6 +86,9 @@ html{scroll-behavior:smooth;scroll-padding-top:96px}
 .cta{width:auto;display:inline-block;margin-top:24px;padding:13px 34px;text-decoration:none;box-shadow:0 8px 20px rgba(201,80,42,.3)}
 .tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
 .tools>input{flex:2 1 200px;min-width:0}.tools select{flex:1 1 140px;width:auto}
+.swf{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 10px;flex:1 1 180px;overflow-x:auto}
+.swb{width:26px;height:26px;flex:none;border-radius:50%;border:2px solid #fff;background:var(--c,transparent);box-shadow:0 0 0 1px var(--line);cursor:pointer;display:grid;place-items:center;color:var(--mute)}
+.swb.on{box-shadow:0 0 0 2px var(--o1)}
 .tools .chk{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 16px;cursor:pointer}
 .tools .chk input{width:auto;accent-color:var(--o1)}
 .dots{display:flex;gap:6px}.dot{width:15px;height:15px;border-radius:50%;border:1px solid var(--line);background:var(--c)}
@@ -188,11 +191,14 @@ body.hascart .fab{bottom:86px}
 .card.click:hover .frame{background:#e9dfd0}
 .socials a{display:inline-flex;gap:8px;align-items:center}
 .contact{background:var(--grad2);border-radius:28px;border:1px solid var(--line);padding:40px 20px;margin-top:56px}
+.prog{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad);z-index:30;transition:width .1s linear}
+.bar.raised{box-shadow:0 4px 16px rgba(0,0,0,.06)}
 @media(max-width:600px){.trust>div{padding:16px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.hero::after{display:none}.card{animation:none}}
 </style>
 </head>
 <body>
+<div class="prog" id="prog"></div>
 <header class="bar"><div>
   <button class="brand" id="home"><img class="lg" alt="SI Boutique" width="52" height="52"><span><b>SI</b> BOUTIQUE</span></button>
   <div class="acts">
@@ -209,11 +215,6 @@ body.hascart .fab{bottom:86px}
     <p class="sub" data-t="sub"></p>
     <div class="chips"><span><em data-ic="truck"></em><span data-t="c1"></span></span><span><em data-ic="shield"></em><span data-t="c2"></span></span><span><em data-ic="swap"></em><span data-t="c3"></span></span><span class="promo"><em data-ic="tag"></em><span data-t="promo"></span></span></div>
     <a class="btn cta" href="#models" data-t="cta"></a>
-    <div class="trust">
-      <div><span data-ic="lock" style="display:inline-flex;justify-content:center"></span><b data-t="trust1"></b><small data-t="trust1d"></small></div>
-      <div><span data-ic="headset" style="display:inline-flex;justify-content:center"></span><b data-t="trust2"></b><small data-t="trust2d"></small></div>
-      <div><span data-ic="star" style="display:inline-flex;justify-content:center"></span><b data-t="trust3"></b><small data-t="trust3d"></small></div>
-    </div>
   </section>
 
   <div id="state" class="state"></div>
@@ -241,7 +242,7 @@ body.hascart .fab{bottom:86px}
   <section class="contact"><h2 data-t="contact"></h2><p class="mute" data-t="contactSub"></p><div class="chips" id="socials"></div></section>
 </main>
 
-<footer><img class="lg" alt="SI Boutique" width="56" height="56"><p data-t="foot" style="font-weight:600;color:var(--o1)"></p><p>© <span id="yr"></span> Boutique SI</p></footer>
+<footer><img class="lg" alt="SI Boutique" width="56" height="56"><p data-t="foot" style="font-weight:600;color:var(--o1)"></p><div class="socials" id="fsocials" style="margin:10px 0"></div><p>© <span id="yr"></span> Boutique SI</p></footer>
 <a class="fab" id="fab" hidden target="_blank" rel="noopener" aria-label="WhatsApp"></a>
 <button class="cbar" id="cbar" hidden></button>
 <div class="shade" id="shade" hidden></div>
@@ -252,7 +253,7 @@ body.hascart .fab{bottom:86px}
 const CONFIG={
   API:"https://script.google.com/macros/s/AKfycbyzqTNB_lM73fswDSkW4mjiFrNT_hV8zHxFisGb1x3mdb8dpzkUWwQYLpkMMtpngRwO/exec",
   COUNTRY_CODE:"213",
-  ORDER_API:"https://script.google.com/macros/s/AKfycbxMnWnvhyxeMbJsM0KoH1xpZ_438q5RYj55TF4Y51he8vjHPOqd_lnj0eKCu8q0LR18/exec", // client/orders sheet
+  ORDER_API:"https://script.google.com/macros/s/AKfycbyWRS0EPRccfRvsoaoEk4sTKFWmv-GbMXKoecpduEjwuSsbeyFL4PKGbn3zX9W2llDmiA/exec", // client/orders sheet
   DISCOUNT:{min:2,pct:20}, // 20% off from 2 pairs
   SAVE_ORDER_TO_SHEET:true, OPEN_WHATSAPP:true, DEFAULT_LANG:"ar"
 };
@@ -324,7 +325,10 @@ wa:'<path d="M4 20l1.300-4A8 8 0 1 1 8 18.700z"/><path d="M9 9c0 3 3 6 6 6l1-2-2
 tt:'<path d="M14 3v11a4 4 0 1 1-4-4"/><path d="M14 3c0 3 2 5 5 5"/>',
 star:'<path d="m12 3 2.700 5.600 6.100.900-4.400 4.400 1 6.100L12 17l-5.400 3 1-6.100L3.200 9.500l6.100-.900z"/>',
 lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
-headset:'<path d="M4 13a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-1v-6h3M4 18v-5h3v6H6a2 2 0 0 1-2-2Z"/>'};
+headset:'<path d="M4 13a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-1v-6h3M4 18v-5h3v6H6a2 2 0 0 1-2-2Z"/>',
+plus:'<path d="M12 5v14M5 12h14"/>',
+minus:'<path d="M5 12h14"/>',
+copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>'};
 const ic=(n,z=18)=>`<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||""}</svg>`;
 const fld=(i,l,inner)=>`<label class="fld"><span class="fl">${ic(i,16)}${l}</span>${inner}</label>`;
 const skel=()=>`<div class="grid">${'<div class="card sk"><div class="frame"><div class="ph"></div></div><div class="info"><i></i><i></i></div></div>'.repeat(4)}</div>`;
@@ -337,6 +341,7 @@ function bar(){
 }
 const norm=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const COLORS={noir:"#1b1b1d",blanc:"#f5f5f2",gris:"#8b9098",beige:"#d8c3a5",bleu:"#3b6ea8",rouge:"#c0392b",vert:"#4f7a5a",marron:"#7a5638"};
+const swOn=c=>F.col===c?"on":"";
 const F={q:"",col:"",sort:"",ok:false};
 const cardHome=i=>{const p=P[i],out=!p.v.some(v=>v.ok),isNew=i===0;return`<article class="card click" data-i="${i}" tabindex="0"><div class="frame">${img(p.img||p.v[0]?.img,p.name)}${out?`<span class="tag no">${t("no")}</span>`:isNew?`<span class="new-badge">${t("newTag")}</span>`:""}</div>
   <div class="info"><div class="rating">${[1,2,3,4,5].map(()=>ic("star",13)).join("")}<span>(${24+(i*7)%40})</span></div><div class="meta"><h3>${esc(p.name)}</h3><span class="price">${money(p.price)}</span></div>
@@ -351,10 +356,11 @@ function buildTools(){
   const cols=[...new Set(P.flatMap(p=>p.v.map(v=>v.col.toLowerCase())))];
   const o=(v,l,c)=>`<option value="${esc(v)}" ${c?"selected":""}>${esc(l)}</option>`;
   $("#tools").innerHTML=`<input id="q" type="search" placeholder="${t("search")}" value="${esc(F.q)}">
-    <select id="fc">${o("",t("allCol"),!F.col)}${cols.map(c=>o(c,cap(c),F.col===c)).join("")}</select>
+    <div class="swf"><button class="swb ${!F.col?"on":""}" data-c="" aria-label="${t("allCol")}">${ic("swap",14)}</button>${cols.map(c=>`<button class="swb ${swOn(c)}" data-c="${esc(c)}" style="--c:${COLORS[c]||"#bbb"}" aria-label="${esc(cap(c))}" title="${esc(cap(c))}"></button>`).join("")}</div>
     <select id="fs">${o("",t("sort"),!F.sort)}${o("asc",t("asc"),F.sort==="asc")}${o("desc",t("desc"),F.sort==="desc")}</select>
     <label class="chk"><input id="fo" type="checkbox" ${F.ok?"checked":""}><span>${t("onlyOk")}</span></label>`;
-  $("#q").oninput=e=>{F.q=e.target.value;home()};$("#fc").onchange=e=>{F.col=e.target.value;home()};
+  $("#q").oninput=e=>{F.q=e.target.value;home()};
+  $(".swf").onclick=e=>{const b=e.target.closest(".swb");if(!b)return;F.col=b.dataset.c;$(".swf .swb").forEach(x=>x.classList.toggle("on",x===b));home()};
   $("#fs").onchange=e=>{F.sort=e.target.value;home()};$("#fo").onchange=e=>{F.ok=e.target.checked;home()};
 }
 const lightbox=u=>{const d=document.createElement("div");d.className="lb";d.innerHTML=`<img src="${esc(u.replace("sz=w900","sz=w1600"))}" alt="">`;d.onclick=()=>d.remove();document.body.append(d)};
@@ -399,7 +405,8 @@ function socials(){
   if(ph){const d=digits(ph).replace(/^213/,"0");n.push([d.replace(/(\d{2})(?=\d)/g,"$1 "),"tel:"+d])}
   [["Facebook","facebook link"],["Instagram","instagram link"],["TikTok","tiktok link"]].forEach(([a,k])=>L[k]&&n.push([a,L[k]]));
   if(L["whatsApp link"])n.push(["WhatsApp",wa(L["whatsApp link"])]);
-  $("#socials").innerHTML=n.map(([a,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${ic(({Facebook:"fb",Instagram:"ig",TikTok:"tt",WhatsApp:"wa"})[a]||"phone",16)}${esc(a)}</a>`).join("");
+  const fs=n.map(([a,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${ic(({Facebook:"fb",Instagram:"ig",TikTok:"tt",WhatsApp:"wa"})[a]||"phone",16)}${esc(a)}</a>`).join("");
+  $("#socials").innerHTML=fs;$("#fsocials").innerHTML=fs;
 }
 
 /* ===== CART ===== */
@@ -419,7 +426,7 @@ function renderCart(){
   $("#dbody").innerHTML=head+`<p class="mute" style="margin:-6px 0 14px">${t("cartSlogan")}</p>`+cart.map((i,k)=>{const{p,v}=line(i);return`<div class="item" data-k="${k}">
     <div class="top"><span class="row2">${img(v.img||p.img,p.name,"thumb")}<span>${esc(p.name)} — ${esc(cap(v.col))}</span></span><button class="rm" data-rm>${t("remove")}</button></div>
     <div class="bot"><label class="mute">${t("size")} <select data-size>${v.sizes.map(z=>`<option ${z===i.size?"selected":""}>${esc(z)}</option>`).join("")}</select></label>
-    <div class="qty"><button data-q="-1">−</button><span>${i.qty}</span><button data-q="1">+</button></div></div>
+    <div class="qty"><button data-q="-1" aria-label="-">${ic("minus",14)}</button><span>${i.qty}</span><button data-q="1" aria-label="+">${ic("plus",14)}</button></div></div>
     <span class="price" style="justify-self:start">${money(p.price*i.qty)}</span></div>`}).join("")+
   `<div class="tots"><div><span class="mute">${t("sub")}</span><span>${money(sum)}</span></div>
    ${disc?`<div class="disc"><span>${t("disc")(D.pct)}</span><span>−${money(disc)}</span></div>`:""}
@@ -476,16 +483,18 @@ async function submit(e){
   const w=L["whatsApp link"];
   cart=[];store("si_cart",cart);show();
   $("#dbody").innerHTML=`<div class="done"><div class="ok-ic">${ic("check",34)}</div><h3>${t("thanks")}</h3>
-   <p class="mute">${t("thanksSub")}</p><p class="ref">${t("ref")} <b dir="ltr">${ref}</b></p>
+   <p class="mute">${t("thanksSub")}</p><p class="ref" id="refline">${t("ref")} <b dir="ltr">${ref}</b><button id="cpyref" aria-label="copy" style="background:none;border:0;color:inherit;cursor:pointer;margin-inline-start:6px;vertical-align:middle">${ic("copy",15)}</button></p>
    <div class="sum">${items.map(i=>`<div><span>${esc(i.produit)} — ${esc(cap(i.couleur))}, ${esc(i.taille)} × ${i.quantite}</span><span>${money(i.prix*i.quantite)}</span></div>`).join("")}${remise?`<div class="okd"><span>${t("disc")(CONFIG.DISCOUNT.pct)}</span><span>−${money(remise)}</span></div>`:""}<div class="st"><span>${t("totalL")}</span><span>${money(total)}</span></div></div>
    <p class="mute">${t(d.livraison==="bureau"?"dBureau":"dHome")} — ${esc(d.wilaya)}, ${esc(d.commune)}</p>
    <p class="mute">${t("next")(esc(d.tel))}</p>
    ${CONFIG.OPEN_WHATSAPP&&w?`<a class="btn" href="${esc(wa(w,msg))}" target="_blank" rel="noopener">${ic("wa",18)}${t("wa")}</a>`:""}
    <button class="pill" id="dc">${t("shop")}</button></div>`;
   $("#dc").onclick=()=>{closeCart();cur=null;show();scrollTo(0,0)};
+  $("#cpyref").onclick=()=>{navigator.clipboard?.writeText(ref);toast(ref)};
 }
 
-$("#yr").textContent=new Date().getFullYear();show();init();
+$("#yr").textContent=new Date().getFullYear();
+addEventListener("scroll",()=>{const h=document.documentElement,p=(h.scrollTop)/(h.scrollHeight-h.clientHeight||1);$("#prog").style.width=(p*100)+"%";$(".bar").classList.toggle("raised",h.scrollTop>4)},{passive:true});show();init();
 </script>
 </body>
 </html>
